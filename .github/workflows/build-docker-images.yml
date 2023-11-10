@@ -1,4 +1,21 @@
+name: Build docker images (scheduled)
 
+on:
+  push:
+    branches:
+      - build_docker_on_kube
+  repository_dispatch:
+  workflow_call:
+    inputs:
+      image_postfix:
+        required: true
+        type: string
+  schedule:
+    - cron: "17 0 * * *"
+
+concurrency:
+  group: docker-images-builds
+  cancel-in-progress: false
 
 jobs:
   latest-pytorch-amd:
